@@ -30,12 +30,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/deve1993/ui-library.git"
+    "url": "https://github.com/deve1993/UI-LIBRARY.git"
   },
   "bugs": {
-    "url": "https://github.com/deve1993/ui-library/issues"
+    "url": "https://github.com/deve1993/UI-LIBRARY/issues"
   },
-  "homepage": "https://github.com/deve1993/ui-library#readme",
+  "homepage": "https://github.com/deve1993/UI-LIBRARY#readme",
   "author": "deve1993",
   "license": "MIT",
   "publishConfig": {
