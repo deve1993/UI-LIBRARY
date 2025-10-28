@@ -1,0 +1,37 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(powershell -Command \"Get-ChildItem -Path ''c:\\VSC\\UI library\\component-vault'' -Recurse | Select-Object FullName\")",
+      "Bash(powershell -Command:*)",
+      "Bash(del \"c:\\VSC\\UI library\\component-vault\\components\\sections\\NavigationHeader.tsx\")",
+      "Bash(npm run storybook:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(taskkill //F //PID 37672)",
+      "Bash(taskkill //F //PID 25892)",
+      "Bash(npm run validate-components:*)",
+      "Bash(npx husky add .husky/pre-commit \"npm run precommit\")",
+      "Bash(npm run check-dependencies:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run type-check:*)",
+      "Bash(npm run update-registry:*)",
+      "Bash(awk:*)",
+      "Bash(test:*)",
+      "Bash(taskkill:*)",
+      "Bash(npm test:*)",
+      "Bash(npm run build:*)",
+      "Bash(find components/sections -name \"*.tsx\" -type f -exec grep -l \"from ''''\\./\" {})",
+      "Bash(timeout 15 bash:*)",
+      "Bash(find components -name \"*.tsx\" -type f ! -name \"*.stories.tsx\" ! -name \"*.test.tsx\" -exec sh -c 'file=\"\"\"\"$1\"\"\"\"; imports=$(grep \"\"\"\"^import.*from\"\"\"\" \"\"\"\"$file\"\"\"\" | grep -v \"\"\"\"@/\"\"\"\" | grep -v \"\"\"\"react\"\"\"\" | grep -v \"\"\"\"framer-motion\"\"\"\" | grep -v \"\"\"\"lucide-react\"\"\"\" | grep -v \"\"\"\"clsx\"\"\"\" | grep -v \"\"\"\"class-variance-authority\"\"\"\" | grep -v \"\"\"\"\\\\.types\"\"\"\" | grep -v \"\"\"\"''''\\\\./index''''\"\"\"\" | wc -l); if [ \"\"\"\"$imports\"\"\"\" -gt 0 ]; then echo \"\"\"\"$file\"\"\"\"; grep \"\"\"\"^import.*from\"\"\"\" \"\"\"\"$file\"\"\"\" | grep -v \"\"\"\"@/\"\"\"\" | grep -v \"\"\"\"react\"\"\"\" | grep -v \"\"\"\"framer-motion\"\"\"\" | grep -v \"\"\"\"lucide-react\"\"\"\" | grep -v \"\"\"\"clsx\"\"\"\" | grep -v \"\"\"\"class-variance-authority\"\"\"\" | grep -v \"\"\"\"\\\\.types\"\"\"\" | grep -v \"\"\"\"''''\\\\./index''''\"\"\"\"; fi' _ {})",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git remote add:*)",
+      "Bash(git remote remove:*)",
+      "Bash(dir:*)",
+      "Bash(git init:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

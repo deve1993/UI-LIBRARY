@@ -1,0 +1,224 @@
+{
+  "skillAutoActivation": {
+    "enabled": true,
+    "description": "Sistema di auto-attivazione skills basato su pattern matching dei prompt",
+    "rules": [
+      {
+        "skillName": "ui-component-builder",
+        "triggers": [
+          "crea component",
+          "nuovo component",
+          "build component",
+          "converti component",
+          "aggiungi animazion",
+          "implement.*pattern",
+          "compound component",
+          "render prop",
+          "custom hook",
+          "accessibilit[aà]",
+          "a11y"
+        ],
+        "priority": "high"
+      },
+      {
+        "skillName": "component-tester",
+        "triggers": [
+          "scrivi test",
+          "test.*component",
+          "coverage",
+          "vitest",
+          "testing library",
+          "unit test",
+          "integration test",
+          "accessibility test",
+          "keyboard navigation test"
+        ],
+        "priority": "high"
+      },
+      {
+        "skillName": "component-documenter",
+        "triggers": [
+          "documentazione",
+          "documenta",
+          "storybook",
+          "story",
+          "stories",
+          "readme",
+          "api doc",
+          "migration guide",
+          "usage.*guide",
+          "esempio.*uso"
+        ],
+        "priority": "medium"
+      },
+      {
+        "skillName": "design-system-manager",
+        "triggers": [
+          "design token",
+          "theming",
+          "tema",
+          "light.*dark",
+          "color palette",
+          "typography",
+          "spacing system",
+          "design system",
+          "color.*accessibility",
+          "wcag"
+        ],
+        "priority": "medium"
+      },
+      {
+        "skillName": "library-bundler",
+        "triggers": [
+          "build.*config",
+          "bundle",
+          "ottimizza.*bundle",
+          "pubblica.*npm",
+          "publish",
+          "esm.*cjs",
+          "tsup",
+          "rollup",
+          "vite config",
+          "tree.*shak",
+          "code split"
+        ],
+        "priority": "medium"
+      },
+      {
+        "skillName": "codebase-analyzer",
+        "triggers": [
+          "analizza",
+          "analisi",
+          "code review",
+          "quality",
+          "qualit[aà]",
+          "duplicazion",
+          "pattern.*detect",
+          "anti.*pattern",
+          "performance.*bottleneck",
+          "dependency.*audit",
+          "security.*audit",
+          "health.*report"
+        ],
+        "priority": "high"
+      }
+    ],
+    "workflows": {
+      "new-component-complete": {
+        "description": "Workflow completo per creazione nuovo componente",
+        "skills": [
+          "ui-component-builder",
+          "component-tester",
+          "component-documenter"
+        ],
+        "steps": [
+          {
+            "skill": "ui-component-builder",
+            "action": "Crea componente con TypeScript, accessibilità, e pattern appropriati"
+          },
+          {
+            "skill": "component-tester",
+            "action": "Genera test suite completa (render, interazione, a11y)"
+          },
+          {
+            "skill": "component-documenter",
+            "action": "Crea Storybook story e documentazione props"
+          }
+        ]
+      },
+      "pre-publish-audit": {
+        "description": "Audit completo prima di pubblicare su NPM",
+        "skills": [
+          "codebase-analyzer",
+          "component-tester",
+          "library-bundler",
+          "component-documenter"
+        ],
+        "steps": [
+          {
+            "skill": "codebase-analyzer",
+            "action": "Health report completo (qualità, dipendenze, security)"
+          },
+          {
+            "skill": "component-tester",
+            "action": "Verifica coverage minimo 80%, esegui tutti i test"
+          },
+          {
+            "skill": "library-bundler",
+            "action": "Ottimizza bundle, analizza size, prepara build"
+          },
+          {
+            "skill": "component-documenter",
+            "action": "Verifica README, changelog, documentazione API"
+          }
+        ]
+      },
+      "quality-improvement": {
+        "description": "Miglioramento qualità codebase",
+        "skills": [
+          "codebase-analyzer",
+          "design-system-manager",
+          "component-tester"
+        ],
+        "steps": [
+          {
+            "skill": "codebase-analyzer",
+            "action": "Trova duplicazioni, anti-pattern, dipendenze unused"
+          },
+          {
+            "skill": "design-system-manager",
+            "action": "Standardizza design tokens, colori, spacing"
+          },
+          {
+            "skill": "component-tester",
+            "action": "Aumenta coverage, aggiungi test mancanti"
+          }
+        ]
+      },
+      "storybook-complete": {
+        "description": "Setup Storybook completo per tutti i componenti",
+        "skills": [
+          "component-documenter",
+          "ui-component-builder",
+          "design-system-manager"
+        ],
+        "steps": [
+          {
+            "skill": "component-documenter",
+            "action": "Genera stories per tutti i componenti"
+          },
+          {
+            "skill": "ui-component-builder",
+            "action": "Aggiungi varianti e stati mancanti"
+          },
+          {
+            "skill": "design-system-manager",
+            "action": "Documenta design tokens in Storybook"
+          }
+        ]
+      },
+      "bundle-optimization": {
+        "description": "Ottimizzazione completa bundle size",
+        "skills": [
+          "library-bundler",
+          "codebase-analyzer",
+          "ui-component-builder"
+        ],
+        "steps": [
+          {
+            "skill": "library-bundler",
+            "action": "Analizza bundle size, identifica dipendenze pesanti"
+          },
+          {
+            "skill": "codebase-analyzer",
+            "action": "Trova dipendenze unused, opportunità code splitting"
+          },
+          {
+            "skill": "ui-component-builder",
+            "action": "Implementa lazy loading dove appropriato"
+          }
+        ]
+      }
+    }
+  }
+}
