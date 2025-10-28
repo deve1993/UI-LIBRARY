@@ -16,6 +16,21 @@
       "import": "./dist/components.mjs",
       "require": "./dist/components.js"
     },
+    "./ui": {
+      "types": "./dist/ui.d.ts",
+      "import": "./dist/ui.mjs",
+      "require": "./dist/ui.js"
+    },
+    "./sections": {
+      "types": "./dist/sections.d.ts",
+      "import": "./dist/sections.mjs",
+      "require": "./dist/sections.js"
+    },
+    "./effects": {
+      "types": "./dist/effects.d.ts",
+      "import": "./dist/effects.mjs",
+      "require": "./dist/effects.js"
+    },
     "./styles": "./styles/globals.css",
     "./package.json": "./package.json"
   },

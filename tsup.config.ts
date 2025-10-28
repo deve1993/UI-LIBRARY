@@ -4,6 +4,9 @@ export default defineConfig({
   entry: {
     index: 'index.ts',
     components: 'components/index.ts',
+    ui: 'components/ui/index.ts',
+    sections: 'components/sections/index.ts',
+    effects: 'components/effects/index.ts',
   },
   format: ['esm', 'cjs'],
   dts: {
@@ -11,11 +14,11 @@ export default defineConfig({
       skipLibCheck: true,
     },
   },
-  splitting: false,
+  splitting: true,
   sourcemap: true,
   clean: true,
   treeshake: true,
-  minify: false,
+  minify: true,
   external: [
     'react',
     'react-dom',
