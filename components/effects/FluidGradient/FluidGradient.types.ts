@@ -11,6 +11,14 @@ export interface FluidGradientProps {
   mouseRadius?: number;
   /** Blob count */
   blobCount?: number;
+  /** Enable glow effect */
+  glow?: boolean;
+  /** Glow intensity (0-1) */
+  glowIntensity?: number;
+  /** Enable morphing animation */
+  morphing?: boolean;
+  /** Morphing speed */
+  morphSpeed?: number;
   /** Custom className */
   className?: string;
 }
@@ -22,4 +30,6 @@ export interface Blob {
   vx: number;
   vy: number;
   color: string;
+  targetRadius?: number;
+  morphProgress?: number;
 }

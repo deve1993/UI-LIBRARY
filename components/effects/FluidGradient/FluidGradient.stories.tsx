@@ -154,6 +154,10 @@ export const NonInteractive: Story = {
     blur: 40,
     interactive: false,
     blobCount: 5,
+    glow: true,
+    glowIntensity: 0.5,
+    morphing: true,
+    morphSpeed: 0.02,
   },
   render: (args) => (
     <>
@@ -161,6 +165,100 @@ export const NonInteractive: Story = {
       <StoryContent
         title="Auto Animate"
         subtitle="No mouse interaction, just beautiful motion"
+      />
+    </>
+  ),
+};
+
+export const EnhancedGlow: Story = {
+  args: {
+    colors: ['#667eea', '#764ba2', '#f093fb', '#4facfe'],
+    speed: 5,
+    blur: 40,
+    interactive: true,
+    mouseRadius: 200,
+    blobCount: 5,
+    glow: true,
+    glowIntensity: 0.8,
+    morphing: true,
+    morphSpeed: 0.02,
+  },
+  render: (args) => (
+    <>
+      <FluidGradient {...args} />
+      <StoryContent
+        title="Enhanced Glow"
+        subtitle="Increased glow intensity for a luminous effect"
+      />
+    </>
+  ),
+};
+
+export const MorphingBlobs: Story = {
+  args: {
+    colors: ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f7b731'],
+    speed: 4,
+    blur: 50,
+    interactive: true,
+    mouseRadius: 220,
+    blobCount: 6,
+    glow: true,
+    glowIntensity: 0.6,
+    morphing: true,
+    morphSpeed: 0.04,
+  },
+  render: (args) => (
+    <>
+      <FluidGradient {...args} />
+      <StoryContent
+        title="Morphing Blobs"
+        subtitle="Watch the blobs smoothly change size"
+      />
+    </>
+  ),
+};
+
+export const NoGlow: Story = {
+  args: {
+    colors: ['#667eea', '#764ba2', '#f093fb', '#4facfe'],
+    speed: 5,
+    blur: 40,
+    interactive: true,
+    mouseRadius: 200,
+    blobCount: 5,
+    glow: false,
+    morphing: true,
+    morphSpeed: 0.02,
+  },
+  render: (args) => (
+    <>
+      <FluidGradient {...args} />
+      <StoryContent
+        title="Without Glow"
+        subtitle="Clean gradient without glow layer"
+      />
+    </>
+  ),
+};
+
+export const StaticSize: Story = {
+  args: {
+    colors: ['#00d2ff', '#3a7bd5', '#6a11cb'],
+    speed: 6,
+    blur: 45,
+    interactive: true,
+    mouseRadius: 200,
+    blobCount: 4,
+    glow: true,
+    glowIntensity: 0.5,
+    morphing: false,
+  },
+  render: (args) => (
+    <>
+      <FluidGradient {...args} />
+      <StoryContent
+        title="Static Size"
+        subtitle="No morphing - blobs maintain constant size"
       />
     </>
   ),

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import type { AuroraWavesProps, Wave } from './AuroraWaves.types';
+import type { AuroraWavesProps, Wave, Star } from './AuroraWaves.types';
 
 export const AuroraWaves: React.FC<AuroraWavesProps> = ({
   colors = ['rgba(0, 255, 255, 0.3)', 'rgba(138, 43, 226, 0.3)', 'rgba(255, 105, 180, 0.3)'],
@@ -12,13 +12,19 @@ export const AuroraWaves: React.FC<AuroraWavesProps> = ({
   parallax = true,
   parallaxIntensity = 0.3,
   backgroundColor = 'rgba(10, 10, 35, 1)',
+  shimmer = true,
+  showStars = true,
+  starCount = 100,
+  colorShift = false,
   className = '',
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wavesRef = useRef<Wave[]>([]);
+  const starsRef = useRef<Star[]>([]);
   const mouseRef = useRef({ x: 0.5, y: 0.5 });
   const animationFrameRef = useRef<number>();
   const timeRef = useRef(0);
+  const colorShiftRef = useRef(0);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
   // Initialize waves
@@ -37,19 +43,114 @@ export const AuroraWaves: React.FC<AuroraWavesProps> = ({
     wavesRef.current = waves;
   };
 
+  // Initialize stars
+  const initStars = () => {
+    const stars: Star[] = [];
+    for (let i = 0; i < starCount; i++) {
+      stars.push({
+        x: Math.random() * 100,
+        y: Math.random() * 100,
+        size: 0.5 + Math.random() * 2,
+        opacity: 0.3 + Math.random() * 0.7,
+        twinkleSpeed: 0.5 + Math.random() * 2,
+        twinkleOffset: Math.random() * Math.PI * 2,
+      });
+    }
+    starsRef.current = stars;
+  };
+
+  // Helper function to shift color hue
+  const shiftColor = (colorStr: string, shift: number): string => {
+    // Extract RGB values from rgba string
+    const match = colorStr.match(/rgba?\((\d+),\s*(\d+),\s*(\d+),?\s*([\d.]*)\)/);
+    if (!match) return colorStr;
+
+    let [, r, g, b, a] = match;
+    const rVal = parseInt(r) / 255;
+    const gVal = parseInt(g) / 255;
+    const bVal = parseInt(b) / 255;
+    const alpha = a || '1';
+
+    // Convert RGB to HSL
+    const max = Math.max(rVal, gVal, bVal);
+    const min = Math.min(rVal, gVal, bVal);
+    let h = 0;
+    const l = (max + min) / 2;
+    const s = max === min ? 0 : l > 0.5 ? (max - min) / (2 - max - min) : (max - min) / (max + min);
+
+    if (max !== min) {
+      if (max === rVal) h = ((gVal - bVal) / (max - min) + (gVal < bVal ? 6 : 0)) / 6;
+      else if (max === gVal) h = ((bVal - rVal) / (max - min) + 2) / 6;
+      else h = ((rVal - gVal) / (max - min) + 4) / 6;
+    }
+
+    // Shift hue
+    h = (h + shift) % 1;
+
+    // Convert back to RGB
+    const hue2rgb = (p: number, q: number, t: number) => {
+      if (t < 0) t += 1;
+      if (t > 1) t -= 1;
+      if (t < 1/6) return p + (q - p) * 6 * t;
+      if (t < 1/2) return q;
+      if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+      return p;
+    };
+
+    let rNew, gNew, bNew;
+    if (s === 0) {
+      rNew = gNew = bNew = l;
+    } else {
+      const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+      const p = 2 * l - q;
+      rNew = hue2rgb(p, q, h + 1/3);
+      gNew = hue2rgb(p, q, h);
+      bNew = hue2rgb(p, q, h - 1/3);
+    }
+
+    return `rgba(${Math.round(rNew * 255)}, ${Math.round(gNew * 255)}, ${Math.round(bNew * 255)}, ${alpha})`;
+  };
+
   // Draw aurora waves
   const draw = (ctx: CanvasRenderingContext2D, width: number, height: number) => {
     // Clear and draw background
     ctx.fillStyle = backgroundColor;
     ctx.fillRect(0, 0, width, height);
 
-    // Apply blur
+    // Draw stars background
+    if (showStars) {
+      ctx.filter = 'none';
+      starsRef.current.forEach((star) => {
+        const twinkle = Math.sin(timeRef.current * star.twinkleSpeed + star.twinkleOffset) * 0.5 + 0.5;
+        ctx.globalAlpha = star.opacity * twinkle;
+        ctx.fillStyle = 'rgba(255, 255, 255, 1)';
+        ctx.beginPath();
+        ctx.arc(
+          (star.x / 100) * width,
+          (star.y / 100) * height,
+          star.size,
+          0,
+          Math.PI * 2
+        );
+        ctx.fill();
+      });
+      ctx.globalAlpha = 1;
+    }
+
+    // Apply blur for waves
     ctx.filter = `blur(${blur}px)`;
+
+    // Update color shift
+    if (colorShift) {
+      colorShiftRef.current = (colorShiftRef.current + 0.001) % 1;
+    }
 
     // Draw each wave
     wavesRef.current.forEach((wave, index) => {
+      const currentColor = colorShift ? shiftColor(wave.color, colorShiftRef.current) : wave.color;
+
       ctx.globalAlpha = wave.opacity;
-      ctx.fillStyle = wave.color;
+      ctx.fillStyle = currentColor;
 
       ctx.beginPath();
       ctx.moveTo(0, height);
@@ -85,6 +186,16 @@ export const AuroraWaves: React.FC<AuroraWavesProps> = ({
       ctx.globalAlpha = wave.opacity * 0.3;
       ctx.fill();
       ctx.globalCompositeOperation = 'source-over';
+
+      // Add shimmer effect
+      if (shimmer) {
+        ctx.globalCompositeOperation = 'lighter';
+        const shimmerOpacity = (Math.sin(timeRef.current * 2 + index) * 0.5 + 0.5) * 0.2;
+        ctx.globalAlpha = shimmerOpacity;
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+        ctx.fill();
+        ctx.globalCompositeOperation = 'source-over';
+      }
     });
 
     ctx.filter = 'none';
@@ -156,6 +267,9 @@ export const AuroraWaves: React.FC<AuroraWavesProps> = ({
     canvas.height = dimensions.height;
 
     initWaves();
+    if (showStars) {
+      initStars();
+    }
     animate();
 
     return () => {
@@ -163,7 +277,7 @@ export const AuroraWaves: React.FC<AuroraWavesProps> = ({
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [dimensions, waveCount, speed]);
+  }, [dimensions, waveCount, speed, showStars, starCount]);
 
   return (
     <canvas

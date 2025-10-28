@@ -15,6 +15,14 @@ export interface AuroraWavesProps {
   parallaxIntensity?: number;
   /** Background base color */
   backgroundColor?: string;
+  /** Enable shimmer/glow effect */
+  shimmer?: boolean;
+  /** Enable stars background */
+  showStars?: boolean;
+  /** Star count */
+  starCount?: number;
+  /** Enable color shifting */
+  colorShift?: boolean;
   /** Custom className */
   className?: string;
 }
@@ -26,4 +34,13 @@ export interface Wave {
   speed: number;
   color: string;
   opacity: number;
+}
+
+export interface Star {
+  x: number;
+  y: number;
+  size: number;
+  opacity: number;
+  twinkleSpeed: number;
+  twinkleOffset: number;
 }
