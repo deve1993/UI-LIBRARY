@@ -5,7 +5,7 @@ import type { TextareaProps } from './Textarea.types';
 /**
  * Textarea - Componente textarea accessibile
  */
-export const Textarea = React.forwardRef<HTMLTextareaElement, TextareaProps>(
+export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   (
     {
       variant = 'default',
@@ -61,7 +61,7 @@ export const Textarea = React.forwardRef<HTMLTextareaElement, TextareaProps>(
       className
     );
 
-    const handleChange = (e: React.ChangeEvent<HTMLTextareaElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       setCharCount(e.target.value.length);
       if (onChange) {
         onChange(e);

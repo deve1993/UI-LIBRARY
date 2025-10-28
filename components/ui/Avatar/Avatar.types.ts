@@ -18,7 +18,7 @@ export interface AvatarProps {
   /** URL dell'immagine avatar */
   src?: string;
   /** Testo alternativo per l'immagine */
-  alt: string;
+  alt?: string;
   /** Nome dell'utente (usato per generare iniziali se manca src) */
   name?: string;
   /** Dimensione dell'avatar */

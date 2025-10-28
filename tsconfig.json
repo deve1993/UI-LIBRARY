@@ -19,7 +19,8 @@
       "@/*": ["./*"],
       "@/components/*": ["./components/*"],
       "@/design-system/*": ["./design-system/*"]
-    }
+    },
+    "types": ["node", "react", "react-dom"]
   },
   "include": [
     "components/**/*",

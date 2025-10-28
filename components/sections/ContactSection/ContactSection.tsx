@@ -3,7 +3,7 @@
  * @component
  */
 import React, { useState, FormEvent } from 'react';
-import type { ContactSectionProps } from './ContactSection.types';
+import type { ContactSectionProps, ContactFormData } from './ContactSection.types';
 
 /**
  * ContactSection - Form di contatto con validazione e progress bar
@@ -30,7 +30,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
-  const [errors, setErrors] = useState<Partial<ContactFormData>>({});
+  const [errors, setErrors] = useState<Partial<Record<keyof ContactFormData, string>>>({});
 
   // Calculate form completion progress
   const calculateProgress = () => {
@@ -43,7 +43,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
   };
 
   const validateForm = (): boolean => {
-    const newErrors: Partial<ContactFormData> = {};
+    const newErrors: Partial<Record<keyof ContactFormData, string>> = {};
 
     if (!formData.name.trim()) newErrors.name = 'Nome richiesto';
     if (!formData.email.trim()) {

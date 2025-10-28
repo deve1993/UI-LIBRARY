@@ -3,7 +3,7 @@
  * @component
  */
 import React from 'react';
-import type { PricingSectionProps } from './PricingSection.types';
+import type { PricingSectionProps, PricingPlan } from './PricingSection.types';
 
 /**
  * PricingSection - Sezione pricing con piani e toggle mensile/annuale
@@ -25,7 +25,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
     billingToggle?.onToggle?.(period);
   };
 
-  const getBadgeStyles = (variant: PricingPlan['badge']['variant']) => {
+  const getBadgeStyles = (variant: NonNullable<PricingPlan['badge']>['variant']) => {
     switch (variant) {
       case 'recommended':
         return 'bg-blue-600 text-white';

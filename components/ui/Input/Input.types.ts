@@ -13,7 +13,7 @@ export type InputSize = 'sm' | 'md' | 'lg';
 /**
  * Props per il componente Input
  */
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   /** Variante visuale */
   variant?: InputVariant;
   /** Dimensione */

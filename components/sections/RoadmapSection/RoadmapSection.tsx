@@ -3,7 +3,7 @@
  * @component
  */
 import React from 'react';
-import type { RoadmapSectionProps } from './RoadmapSection.types';
+import type { RoadmapSectionProps, RoadmapMilestone } from './RoadmapSection.types';
 
 /**
  * RoadmapSection - Timeline verticale con milestones e stati

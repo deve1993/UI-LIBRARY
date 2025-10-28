@@ -150,34 +150,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           </div>
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes float-slow {
-          0%, 100% {
-            transform: translate(-50%, -50%) translateY(0px);
-          }
-          50% {
-            transform: translate(-50%, -50%) translateY(20px);
-          }
-        }
-
-        @keyframes float-slow-delayed {
-          0%, 100% {
-            transform: translate(50%, 50%) translateY(0px);
-          }
-          50% {
-            transform: translate(50%, 50%) translateY(-20px);
-          }
-        }
-
-        .animate-float-slow {
-          animation: float-slow 6s ease-in-out infinite;
-        }
-
-        .animate-float-slow-delayed {
-          animation: float-slow-delayed 8s ease-in-out infinite;
-        }
-      `}</style>
     </section>
   );
 };
