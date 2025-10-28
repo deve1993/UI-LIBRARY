@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { ClientLogosSection } from './ClientLogosSection';
 
 const meta: Meta<typeof ClientLogosSection> = {
-  title: 'Sections/ClientLogosSection',
+  title: 'Sections/SocialProof/ClientLogosSection',
   component: ClientLogosSection,
   parameters: {
     layout: 'fullscreen',

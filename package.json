@@ -26,6 +26,51 @@
       "import": "./dist/sections.mjs",
       "require": "./dist/sections.js"
     },
+    "./sections/hero": {
+      "types": "./dist/sections-hero.d.ts",
+      "import": "./dist/sections-hero.mjs",
+      "require": "./dist/sections-hero.js"
+    },
+    "./sections/features": {
+      "types": "./dist/sections-features.d.ts",
+      "import": "./dist/sections-features.mjs",
+      "require": "./dist/sections-features.js"
+    },
+    "./sections/footer": {
+      "types": "./dist/sections-footer.d.ts",
+      "import": "./dist/sections-footer.mjs",
+      "require": "./dist/sections-footer.js"
+    },
+    "./sections/cta": {
+      "types": "./dist/sections-cta.d.ts",
+      "import": "./dist/sections-cta.mjs",
+      "require": "./dist/sections-cta.js"
+    },
+    "./sections/navigation": {
+      "types": "./dist/sections-navigation.d.ts",
+      "import": "./dist/sections-navigation.mjs",
+      "require": "./dist/sections-navigation.js"
+    },
+    "./sections/social-proof": {
+      "types": "./dist/sections-social-proof.d.ts",
+      "import": "./dist/sections-social-proof.mjs",
+      "require": "./dist/sections-social-proof.js"
+    },
+    "./sections/pricing": {
+      "types": "./dist/sections-pricing.d.ts",
+      "import": "./dist/sections-pricing.mjs",
+      "require": "./dist/sections-pricing.js"
+    },
+    "./sections/contact": {
+      "types": "./dist/sections-contact.d.ts",
+      "import": "./dist/sections-contact.mjs",
+      "require": "./dist/sections-contact.js"
+    },
+    "./sections/content": {
+      "types": "./dist/sections-content.d.ts",
+      "import": "./dist/sections-content.mjs",
+      "require": "./dist/sections-content.js"
+    },
     "./effects": {
       "types": "./dist/effects.d.ts",
       "import": "./dist/effects.mjs",

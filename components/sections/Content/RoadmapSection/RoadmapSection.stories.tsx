@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { RoadmapSection } from './RoadmapSection';
 
 const meta: Meta<typeof RoadmapSection> = {
-  title: 'Sections/RoadmapSection',
+  title: 'Sections/Content/RoadmapSection',
   component: RoadmapSection,
   parameters: {
     layout: 'fullscreen',

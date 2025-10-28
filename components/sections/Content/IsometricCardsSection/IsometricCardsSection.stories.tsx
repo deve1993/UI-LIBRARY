@@ -3,7 +3,7 @@ import { IsometricCardsSection } from './IsometricCardsSection';
 import { Zap, Shield, Sparkles, TrendingUp, Award, Users, Rocket, Star } from 'lucide-react';
 
 const meta = {
-  title: 'Sections/IsometricCardsSection',
+  title: 'Sections/Content/IsometricCardsSection',
   component: IsometricCardsSection,
   parameters: {
     layout: 'fullscreen',

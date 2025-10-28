@@ -3,7 +3,7 @@ import { WhyChooseSection } from './WhyChooseSection';
 import { Users, Zap, Award, TrendingUp, Shield, Clock, Heart, Star } from 'lucide-react';
 
 const meta = {
-  title: 'Sections/WhyChooseSection',
+  title: 'Sections/Features/WhyChooseSection',
   component: WhyChooseSection,
   parameters: {
     layout: 'fullscreen',

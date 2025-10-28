@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { TestimonialsSection } from './TestimonialsSection';
 
 const meta: Meta<typeof TestimonialsSection> = {
-  title: 'Sections/TestimonialsSection',
+  title: 'Sections/SocialProof/TestimonialsSection',
   component: TestimonialsSection,
   parameters: {
     layout: 'fullscreen',

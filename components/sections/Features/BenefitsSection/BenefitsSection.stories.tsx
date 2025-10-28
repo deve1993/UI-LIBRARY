@@ -3,7 +3,7 @@ import { BenefitsSection } from './BenefitsSection';
 import { Users, TrendingUp, Award, Zap } from 'lucide-react';
 
 const meta: Meta<typeof BenefitsSection> = {
-  title: 'Sections/BenefitsSection',
+  title: 'Sections/Features/BenefitsSection',
   component: BenefitsSection,
   parameters: {
     layout: 'fullscreen',

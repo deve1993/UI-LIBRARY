@@ -29,65 +29,10 @@ export { TextReveal } from './effects/TextReveal';
 export type * from './effects/TextReveal/TextReveal.types';
 
 // ═══════════════════════════════════════════════════════════
-// Sections
+// Sections - Now organized by category
 // ═══════════════════════════════════════════════════════════
 
-export { BenefitsSection } from './sections/BenefitsSection';
-export type * from './sections/BenefitsSection/BenefitsSection.types';
-export { ClientLogosSection } from './sections/ClientLogosSection';
-export type * from './sections/ClientLogosSection/ClientLogosSection.types';
-export { ContactSection } from './sections/ContactSection';
-export type * from './sections/ContactSection/ContactSection.types';
-export { CTAGradient } from './sections/CTAGradient';
-export type * from './sections/CTAGradient/CTAGradient.types';
-export { CTANewsletter } from './sections/CTANewsletter';
-export type * from './sections/CTANewsletter/CTANewsletter.types';
-export { CTASectionAdvanced } from './sections/CTASectionAdvanced';
-export type { CTASectionAdvancedProps } from './sections/CTASectionAdvanced/CTASectionAdvanced.types';
-export { FeaturesBento } from './sections/FeaturesBento';
-export type * from './sections/FeaturesBento/FeaturesBento.types';
-export { FeaturesGrid } from './sections/FeaturesGrid';
-export type { FeaturesGridProps } from './sections/FeaturesGrid/FeaturesGrid.types';
-export { FeaturesSection } from './sections/FeaturesSection';
-export type * from './sections/FeaturesSection/FeaturesSection.types';
-export { FeaturesTabs } from './sections/FeaturesTabs';
-export type * from './sections/FeaturesTabs/FeaturesTabs.types';
-export { FeaturesTimeline } from './sections/FeaturesTimeline';
-export type * from './sections/FeaturesTimeline/FeaturesTimeline.types';
-export { Footer } from './sections/Footer';
-export type * from './sections/Footer/Footer.types';
-export { HeroAnimatedBeam } from './sections/HeroAnimatedBeam';
-export type * from './sections/HeroAnimatedBeam/HeroAnimatedBeam.types';
-export { HeroGradient } from './sections/HeroGradient';
-export type * from './sections/HeroGradient/HeroGradient.types';
-export { HeroMeteor } from './sections/HeroMeteor';
-export type * from './sections/HeroMeteor/HeroMeteor.types';
-export { HeroParticles } from './sections/HeroParticles';
-export type * from './sections/HeroParticles/HeroParticles.types';
-export { HeroSection } from './sections/HeroSection';
-export type * from './sections/HeroSection/HeroSection.types';
-export { HeroSplitScreen } from './sections/HeroSplitScreen';
-export type { HeroSplitScreenProps } from './sections/HeroSplitScreen/HeroSplitScreen.types';
-export { HeroSpotlight } from './sections/HeroSpotlight';
-export type * from './sections/HeroSpotlight/HeroSpotlight.types';
-export { HeroTypewriter } from './sections/HeroTypewriter';
-export type * from './sections/HeroTypewriter/HeroTypewriter.types';
-export { HeroVideo } from './sections/HeroVideo';
-export type * from './sections/HeroVideo/HeroVideo.types';
-export { HeroWaves } from './sections/HeroWaves';
-export type * from './sections/HeroWaves/HeroWaves.types';
-export { IsometricCardsSection } from './sections/IsometricCardsSection';
-export type * from './sections/IsometricCardsSection/IsometricCardsSection.types';
-export { NavigationHeader } from './sections/NavigationHeader';
-export type * from './sections/NavigationHeader/NavigationHeader.types';
-export { PricingSection } from './sections/PricingSection';
-export type * from './sections/PricingSection/PricingSection.types';
-export { RoadmapSection } from './sections/RoadmapSection';
-export type * from './sections/RoadmapSection/RoadmapSection.types';
-export { TestimonialsSection } from './sections/TestimonialsSection';
-export type * from './sections/TestimonialsSection/TestimonialsSection.types';
-export { WhyChooseSection } from './sections/WhyChooseSection';
-export type * from './sections/WhyChooseSection/WhyChooseSection.types';
+export * from './sections';
 
 // ═══════════════════════════════════════════════════════════
 // Ui
