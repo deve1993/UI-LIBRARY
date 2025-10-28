@@ -46,7 +46,7 @@ export interface ${pascalName}Props {
 `;
 }
 
-function generateComponent(config: ComponentConfig): string {
+function generateComponentTemplate(config: ComponentConfig): string {
   const { name, description } = config;
   const pascalName = toPascalCase(name);
 
@@ -225,7 +225,7 @@ async function generateComponent(config: ComponentConfig) {
   // Generate files
   const files = {
     [`${pascalName}.types.ts`]: generateTypes(config),
-    [`${pascalName}.tsx`]: generateComponent(config),
+    [`${pascalName}.tsx`]: generateComponentTemplate(config),
     [`${pascalName}.stories.tsx`]: generateStories(config),
     'index.ts': generateIndex(config),
     'README.md': generateReadme(config),
