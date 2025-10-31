@@ -101,55 +101,181 @@
           "health.*report"
         ],
         "priority": "high"
+      },
+      {
+        "skillName": "test-generator",
+        "agentPath": ".claude/agents/test-generator.md",
+        "triggers": [
+          "genera test",
+          "test coverage",
+          "aumenta coverage",
+          "crea test",
+          "test automatici",
+          "test mancanti",
+          "test.*generate",
+          "coverage.*report",
+          "snapshot test",
+          "integration.*test"
+        ],
+        "priority": "high"
+      },
+      {
+        "skillName": "dependency-migrator",
+        "agentPath": ".claude/agents/dependency-migrator.md",
+        "triggers": [
+          "upgrade",
+          "migra.*dipendenze",
+          "update.*dependencies",
+          "major.*update",
+          "breaking.*change",
+          "storybook.*upgrade",
+          "tailwind.*upgrade",
+          "react.*upgrade",
+          "migration.*plan"
+        ],
+        "priority": "high"
+      },
+      {
+        "skillName": "performance-auditor",
+        "agentPath": ".claude/agents/performance-auditor.md",
+        "triggers": [
+          "ottimizza",
+          "performance",
+          "bundle.*size",
+          "re-render",
+          "memory.*leak",
+          "lazy.*load",
+          "code.*split",
+          "tree.*shaking",
+          "useMemo",
+          "useCallback",
+          "React\\.memo"
+        ],
+        "priority": "medium"
+      },
+      {
+        "skillName": "a11y-auditor",
+        "agentPath": ".claude/agents/a11y-auditor.md",
+        "triggers": [
+          "accessibilit[aà]",
+          "a11y",
+          "wcag",
+          "aria",
+          "keyboard.*nav",
+          "screen.*reader",
+          "color.*contrast",
+          "focus.*management",
+          "semantic.*html"
+        ],
+        "priority": "medium"
+      },
+      {
+        "skillName": "release-manager",
+        "agentPath": ".claude/agents/release-manager.md",
+        "triggers": [
+          "publish",
+          "release",
+          "versione",
+          "changelog",
+          "npm.*publish",
+          "semantic.*version",
+          "git.*tag",
+          "github.*release",
+          "pre.*publish"
+        ],
+        "priority": "medium"
+      },
+      {
+        "skillName": "dependency-manager",
+        "agentPath": ".claude/agents/dependency-manager.md",
+        "triggers": [
+          "pulisci.*dipendenze",
+          "rimuovi.*unused",
+          "dependency.*cleanup",
+          "unused.*dependencies",
+          "security.*vulnerabilit",
+          "npm.*audit",
+          "dependency.*optimization"
+        ],
+        "priority": "low"
+      },
+      {
+        "skillName": "doc-sync",
+        "agentPath": ".claude/agents/doc-sync.md",
+        "triggers": [
+          "aggiorna.*docs",
+          "sync.*documentation",
+          "readme.*update",
+          "props.*table",
+          "api.*documentation",
+          "doc.*generation",
+          "documentation.*sync"
+        ],
+        "priority": "low"
       }
     ],
     "workflows": {
       "new-component-complete": {
         "description": "Workflow completo per creazione nuovo componente",
-        "skills": [
-          "ui-component-builder",
-          "component-tester",
-          "component-documenter"
-        ],
+        "skills": ["ui-component-builder", "component-documenter"],
+        "agents": ["test-generator", "a11y-auditor"],
         "steps": [
           {
-            "skill": "ui-component-builder",
+            "type": "skill",
+            "name": "ui-component-builder",
             "action": "Crea componente con TypeScript, accessibilità, e pattern appropriati"
           },
           {
-            "skill": "component-tester",
-            "action": "Genera test suite completa (render, interazione, a11y)"
+            "type": "agent",
+            "name": "test-generator",
+            "action": "Genera test suite automatica completa (render, props, interazione, a11y)"
           },
           {
-            "skill": "component-documenter",
+            "type": "skill",
+            "name": "component-documenter",
             "action": "Crea Storybook story e documentazione props"
+          },
+          {
+            "type": "agent",
+            "name": "a11y-auditor",
+            "action": "Verifica accessibilità WCAG 2.1 AA"
           }
         ]
       },
       "pre-publish-audit": {
         "description": "Audit completo prima di pubblicare su NPM",
-        "skills": [
-          "codebase-analyzer",
-          "component-tester",
-          "library-bundler",
-          "component-documenter"
-        ],
+        "skills": ["codebase-analyzer", "component-tester", "library-bundler"],
+        "agents": ["test-generator", "performance-auditor", "a11y-auditor", "dependency-manager"],
         "steps": [
           {
-            "skill": "codebase-analyzer",
-            "action": "Health report completo (qualità, dipendenze, security)"
+            "type": "agent",
+            "name": "test-generator",
+            "action": "Verifica coverage 80%+, genera test mancanti"
           },
           {
-            "skill": "component-tester",
-            "action": "Verifica coverage minimo 80%, esegui tutti i test"
+            "type": "skill",
+            "name": "component-tester",
+            "action": "Esegui test suite completa"
           },
           {
-            "skill": "library-bundler",
-            "action": "Ottimizza bundle, analizza size, prepara build"
+            "type": "agent",
+            "name": "dependency-manager",
+            "action": "Audit dipendenze: security, unused, outdated"
           },
           {
-            "skill": "component-documenter",
-            "action": "Verifica README, changelog, documentazione API"
+            "type": "agent",
+            "name": "performance-auditor",
+            "action": "Analizza bundle size e performance"
+          },
+          {
+            "type": "agent",
+            "name": "a11y-auditor",
+            "action": "Verifica compliance WCAG 2.1 AA"
+          },
+          {
+            "type": "skill",
+            "name": "library-bundler",
+            "action": "Build e ottimizza bundle per pubblicazione"
           }
         ]
       },
@@ -162,15 +288,18 @@
         ],
         "steps": [
           {
-            "skill": "codebase-analyzer",
+            "type": "skill",
+            "name": "codebase-analyzer",
             "action": "Trova duplicazioni, anti-pattern, dipendenze unused"
           },
           {
-            "skill": "design-system-manager",
+            "type": "skill",
+            "name": "design-system-manager",
             "action": "Standardizza design tokens, colori, spacing"
           },
           {
-            "skill": "component-tester",
+            "type": "skill",
+            "name": "component-tester",
             "action": "Aumenta coverage, aggiungi test mancanti"
           }
         ]
@@ -184,38 +313,208 @@
         ],
         "steps": [
           {
-            "skill": "component-documenter",
+            "type": "skill",
+            "name": "component-documenter",
             "action": "Genera stories per tutti i componenti"
           },
           {
-            "skill": "ui-component-builder",
+            "type": "skill",
+            "name": "ui-component-builder",
             "action": "Aggiungi varianti e stati mancanti"
           },
           {
-            "skill": "design-system-manager",
+            "type": "skill",
+            "name": "design-system-manager",
             "action": "Documenta design tokens in Storybook"
           }
         ]
       },
       "bundle-optimization": {
-        "description": "Ottimizzazione completa bundle size",
-        "skills": [
-          "library-bundler",
-          "codebase-analyzer",
-          "ui-component-builder"
-        ],
+        "description": "Ottimizzazione completa bundle size e performance",
+        "skills": ["library-bundler", "codebase-analyzer", "ui-component-builder"],
+        "agents": ["performance-auditor", "dependency-manager"],
         "steps": [
           {
-            "skill": "library-bundler",
-            "action": "Analizza bundle size, identifica dipendenze pesanti"
+            "type": "agent",
+            "name": "performance-auditor",
+            "action": "Analizza bundle size, re-renders, memory leaks"
           },
           {
-            "skill": "codebase-analyzer",
-            "action": "Trova dipendenze unused, opportunità code splitting"
+            "type": "agent",
+            "name": "dependency-manager",
+            "action": "Trova dipendenze unused, ottimizza package.json"
           },
           {
-            "skill": "ui-component-builder",
-            "action": "Implementa lazy loading dove appropriato"
+            "type": "skill",
+            "name": "library-bundler",
+            "action": "Implementa code splitting e tree shaking"
+          },
+          {
+            "type": "skill",
+            "name": "ui-component-builder",
+            "action": "Implementa lazy loading e React.memo dove appropriato"
+          }
+        ]
+      },
+      "test-coverage-boost": {
+        "description": "Aumenta test coverage all'80%+",
+        "agents": ["test-generator"],
+        "skills": ["component-tester"],
+        "steps": [
+          {
+            "type": "agent",
+            "name": "test-generator",
+            "action": "Analizza coverage attuale e genera test per componenti mancanti"
+          },
+          {
+            "type": "skill",
+            "name": "component-tester",
+            "action": "Esegui test suite completa e verifica coverage target raggiunto"
+          }
+        ]
+      },
+      "dependency-upgrade-safe": {
+        "description": "Upgrade sicuro dipendenze con test automatici",
+        "agents": ["dependency-migrator", "test-generator"],
+        "skills": ["component-tester"],
+        "steps": [
+          {
+            "type": "agent",
+            "name": "dependency-migrator",
+            "action": "Analizza dipendenze outdated e genera migration plan"
+          },
+          {
+            "type": "agent",
+            "name": "test-generator",
+            "action": "Genera test per componenti critici se mancanti"
+          },
+          {
+            "type": "skill",
+            "name": "component-tester",
+            "action": "Esegui test prima e dopo ogni upgrade per verificare assenza breaking changes"
+          }
+        ]
+      },
+      "performance-optimization-full": {
+        "description": "Ottimizzazione performance completa",
+        "agents": ["performance-auditor", "test-generator"],
+        "skills": ["library-bundler"],
+        "steps": [
+          {
+            "type": "agent",
+            "name": "performance-auditor",
+            "action": "Analizza performance: bundle size, re-renders, memory leaks"
+          },
+          {
+            "type": "skill",
+            "name": "library-bundler",
+            "action": "Implementa code splitting e tree shaking"
+          },
+          {
+            "type": "agent",
+            "name": "test-generator",
+            "action": "Genera performance tests per componenti ottimizzati"
+          }
+        ]
+      },
+      "accessibility-compliance": {
+        "description": "Raggiungimento WCAG 2.1 AA compliance",
+        "agents": ["a11y-auditor", "test-generator"],
+        "skills": ["ui-component-builder", "component-documenter"],
+        "steps": [
+          {
+            "type": "agent",
+            "name": "a11y-auditor",
+            "action": "Audit accessibilità: WCAG, keyboard nav, screen readers, ARIA"
+          },
+          {
+            "type": "skill",
+            "name": "ui-component-builder",
+            "action": "Fix issues accessibilità identificati"
+          },
+          {
+            "type": "agent",
+            "name": "test-generator",
+            "action": "Genera test accessibilità per tutti i componenti"
+          },
+          {
+            "type": "skill",
+            "name": "component-documenter",
+            "action": "Documenta features accessibilità in Storybook"
+          }
+        ]
+      },
+      "release-preparation": {
+        "description": "Preparazione completa per release NPM",
+        "agents": ["test-generator", "dependency-manager", "performance-auditor", "a11y-auditor", "release-manager"],
+        "skills": ["component-tester", "library-bundler"],
+        "steps": [
+          {
+            "type": "agent",
+            "name": "test-generator",
+            "action": "Verifica coverage 80%+, genera test mancanti"
+          },
+          {
+            "type": "skill",
+            "name": "component-tester",
+            "action": "Esegui test suite completa"
+          },
+          {
+            "type": "agent",
+            "name": "dependency-manager",
+            "action": "Cleanup dipendenze unused, security audit"
+          },
+          {
+            "type": "agent",
+            "name": "performance-auditor",
+            "action": "Verifica bundle size e ottimizzazioni"
+          },
+          {
+            "type": "agent",
+            "name": "a11y-auditor",
+            "action": "Verifica compliance WCAG 2.1 AA"
+          },
+          {
+            "type": "skill",
+            "name": "library-bundler",
+            "action": "Build e ottimizza bundle"
+          },
+          {
+            "type": "agent",
+            "name": "release-manager",
+            "action": "Genera changelog e publish su NPM con versioning automatico"
+          }
+        ]
+      },
+      "full-quality-audit": {
+        "description": "Audit qualità completo del progetto",
+        "agents": ["test-generator", "performance-auditor", "a11y-auditor", "dependency-manager"],
+        "skills": ["codebase-analyzer"],
+        "steps": [
+          {
+            "type": "skill",
+            "name": "codebase-analyzer",
+            "action": "Analizza codebase: patterns, duplicazioni, complexity"
+          },
+          {
+            "type": "agent",
+            "name": "test-generator",
+            "action": "Analizza test coverage e genera report"
+          },
+          {
+            "type": "agent",
+            "name": "performance-auditor",
+            "action": "Audit performance e bundle size"
+          },
+          {
+            "type": "agent",
+            "name": "a11y-auditor",
+            "action": "Audit accessibilità WCAG compliance"
+          },
+          {
+            "type": "agent",
+            "name": "dependency-manager",
+            "action": "Audit dipendenze: security, unused, outdated"
           }
         ]
       }
