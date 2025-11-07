@@ -14,6 +14,11 @@ import type {
   Review,
   SocialMetrics,
   Campaign,
+  AnalyticsOverview,
+  DateRange,
+  ChartDataPoint,
+  TrafficSourceData,
+  LandingPageData,
 } from '@/types';
 
 const USE_MOCK = process.env.USE_MOCK_API === 'true';
@@ -332,6 +337,264 @@ class ApiClient {
       '3': 'urgent',
     };
     return priorityMap[priority] || 'medium';
+  }
+
+  // ============================================
+  // ANALYTICS & DASHBOARD
+  // ============================================
+
+  async getAnalyticsOverview(
+    dateRange: DateRange,
+    comparisonRange?: DateRange,
+    countryFilter?: string
+  ): Promise<AnalyticsOverview> {
+    if (USE_MOCK) {
+      return this.generateMockAnalytics(dateRange, comparisonRange, countryFilter);
+    }
+
+    throw new Error('Real analytics overview not implemented yet');
+  }
+
+  async getAnalyticsChartData(
+    dateRange: DateRange,
+    metric: 'users' | 'pageViews' | 'conversions',
+    comparisonRange?: DateRange,
+    countryFilter?: string
+  ): Promise<ChartDataPoint[]> {
+    if (USE_MOCK) {
+      const overview = await this.generateMockAnalytics(dateRange, comparisonRange, countryFilter);
+
+      switch (metric) {
+        case 'users':
+          return overview.usersChart;
+        case 'pageViews':
+          return overview.pageViewsChart;
+        case 'conversions':
+          return overview.conversionsChart;
+        default:
+          return overview.usersChart;
+      }
+    }
+
+    throw new Error('Real analytics chart data not implemented yet');
+  }
+
+  async getTrafficSourcesDetailed(
+    dateRange: DateRange,
+    countryFilter?: string
+  ): Promise<TrafficSourceData[]> {
+    if (USE_MOCK) {
+      const overview = await this.generateMockAnalytics(dateRange, undefined, countryFilter);
+      return overview.trafficSources;
+    }
+
+    throw new Error('Real traffic sources not implemented yet');
+  }
+
+  async getLandingPagesData(
+    dateRange: DateRange,
+    countryFilter?: string
+  ): Promise<LandingPageData[]> {
+    if (USE_MOCK) {
+      const overview = await this.generateMockAnalytics(dateRange, undefined, countryFilter);
+      return overview.landingPages;
+    }
+
+    throw new Error('Real landing pages not implemented yet');
+  }
+
+  // Mock data generator for analytics
+  private generateMockAnalytics(
+    dateRange: DateRange,
+    comparisonRange?: DateRange,
+    countryFilter?: string
+  ): AnalyticsOverview {
+    const { startDate, endDate } = dateRange;
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const days = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+
+    // Generate base metrics
+    const baseSessions = 15000 + Math.floor(Math.random() * 5000);
+    const baseUsers = Math.floor(baseSessions * (0.7 + Math.random() * 0.2));
+    const baseKeyEvents = Math.floor(baseSessions * (0.03 + Math.random() * 0.05));
+    const basePageViews = Math.floor(baseSessions * (2.5 + Math.random() * 1.5));
+
+    // Calculate comparison changes
+    const sessionsChange = -5 + Math.random() * 30;
+    const usersChange = -5 + Math.random() * 25;
+    const eventsChange = -10 + Math.random() * 40;
+    const pageViewsChange = -5 + Math.random() * 20;
+
+    const metrics = {
+      sessions: baseSessions,
+      sessionsChange,
+      activeUsers: baseUsers,
+      activeUsersChange: usersChange,
+      keyEvents: baseKeyEvents,
+      keyEventsChange: eventsChange,
+      pageViews: basePageViews,
+      pageViewsChange,
+      bounceRate: 45 + Math.random() * 15,
+      bounceRateChange: -5 + Math.random() * 10,
+      avgSessionDuration: 120 + Math.random() * 60,
+      avgSessionDurationChange: -10 + Math.random() * 20,
+    };
+
+    // Generate chart data
+    const usersChart: ChartDataPoint[] = [];
+    const pageViewsChart: ChartDataPoint[] = [];
+    const conversionsChart: ChartDataPoint[] = [];
+
+    for (let i = 0; i < days; i++) {
+      const currentDate = new Date(start);
+      currentDate.setDate(start.getDate() + i);
+      const dateStr = currentDate.toISOString().split('T')[0];
+
+      // Add some realistic variation
+      const dayVariation = 0.8 + Math.random() * 0.4;
+      const weekendFactor = currentDate.getDay() === 0 || currentDate.getDay() === 6 ? 0.7 : 1;
+
+      const dayUsers = Math.floor((baseUsers / days) * dayVariation * weekendFactor);
+      const dayPageViews = Math.floor((basePageViews / days) * dayVariation * weekendFactor);
+      const dayConversions = Math.floor((baseKeyEvents / days) * dayVariation * weekendFactor);
+
+      usersChart.push({
+        date: dateStr,
+        value: dayUsers,
+        comparisonValue: comparisonRange ? Math.floor(dayUsers / (1 + usersChange / 100)) : undefined,
+      });
+
+      pageViewsChart.push({
+        date: dateStr,
+        value: dayPageViews,
+        comparisonValue: comparisonRange ? Math.floor(dayPageViews / (1 + pageViewsChange / 100)) : undefined,
+      });
+
+      conversionsChart.push({
+        date: dateStr,
+        value: dayConversions,
+        comparisonValue: comparisonRange ? Math.floor(dayConversions / (1 + eventsChange / 100)) : undefined,
+      });
+    }
+
+    // Traffic sources
+    const trafficSources: TrafficSourceData[] = [
+      {
+        source: 'google',
+        medium: 'organic',
+        sessions: Math.floor(baseSessions * 0.35),
+        keyEvents: Math.floor(baseKeyEvents * 0.4),
+        conversionRate: 4.2,
+        users: Math.floor(baseUsers * 0.38),
+      },
+      {
+        source: 'google',
+        medium: 'cpc',
+        sessions: Math.floor(baseSessions * 0.25),
+        keyEvents: Math.floor(baseKeyEvents * 0.3),
+        conversionRate: 5.1,
+        users: Math.floor(baseUsers * 0.22),
+      },
+      {
+        source: '(direct)',
+        medium: '(none)',
+        sessions: Math.floor(baseSessions * 0.2),
+        keyEvents: Math.floor(baseKeyEvents * 0.15),
+        conversionRate: 2.8,
+        users: Math.floor(baseUsers * 0.21),
+      },
+      {
+        source: 'facebook',
+        medium: 'social',
+        sessions: Math.floor(baseSessions * 0.12),
+        keyEvents: Math.floor(baseKeyEvents * 0.1),
+        conversionRate: 3.3,
+        users: Math.floor(baseUsers * 0.11),
+      },
+      {
+        source: 'newsletter',
+        medium: 'email',
+        sessions: Math.floor(baseSessions * 0.08),
+        keyEvents: Math.floor(baseKeyEvents * 0.05),
+        conversionRate: 2.1,
+        users: Math.floor(baseUsers * 0.08),
+      },
+    ];
+
+    // Landing pages
+    const landingPages: LandingPageData[] = [
+      {
+        page: '/',
+        pageTitle: 'Homepage',
+        views: Math.floor(basePageViews * 0.3),
+        keyEvents: Math.floor(baseKeyEvents * 0.25),
+        bounceRate: 42.5,
+        avgTimeOnPage: 125,
+      },
+      {
+        page: '/prodotti',
+        pageTitle: 'Prodotti',
+        views: Math.floor(basePageViews * 0.2),
+        keyEvents: Math.floor(baseKeyEvents * 0.35),
+        bounceRate: 38.2,
+        avgTimeOnPage: 215,
+      },
+      {
+        page: '/offerte',
+        pageTitle: 'Offerte Speciali',
+        views: Math.floor(basePageViews * 0.15),
+        keyEvents: Math.floor(baseKeyEvents * 0.2),
+        bounceRate: 35.8,
+        avgTimeOnPage: 180,
+      },
+      {
+        page: '/chi-siamo',
+        pageTitle: 'Chi Siamo',
+        views: Math.floor(basePageViews * 0.1),
+        keyEvents: Math.floor(baseKeyEvents * 0.05),
+        bounceRate: 55.3,
+        avgTimeOnPage: 95,
+      },
+      {
+        page: '/contatti',
+        pageTitle: 'Contatti',
+        views: Math.floor(basePageViews * 0.08),
+        keyEvents: Math.floor(baseKeyEvents * 0.15),
+        bounceRate: 28.9,
+        avgTimeOnPage: 145,
+      },
+    ];
+
+    // Devices
+    const devices = [
+      { device: 'mobile' as const, sessions: Math.floor(baseSessions * 0.6), percentage: 60, users: Math.floor(baseUsers * 0.62) },
+      { device: 'desktop' as const, sessions: Math.floor(baseSessions * 0.32), percentage: 32, users: Math.floor(baseUsers * 0.3) },
+      { device: 'tablet' as const, sessions: Math.floor(baseSessions * 0.08), percentage: 8, users: Math.floor(baseUsers * 0.08) },
+    ];
+
+    // Geographic data
+    const geographic = [
+      { country: 'Italia', countryCode: 'IT', sessions: Math.floor(baseSessions * 0.65), users: Math.floor(baseUsers * 0.68), bounceRate: 44.2, keyEvents: Math.floor(baseKeyEvents * 0.7) },
+      { country: 'Stati Uniti', countryCode: 'US', sessions: Math.floor(baseSessions * 0.12), users: Math.floor(baseUsers * 0.11), bounceRate: 52.1, keyEvents: Math.floor(baseKeyEvents * 0.1) },
+      { country: 'Germania', countryCode: 'DE', sessions: Math.floor(baseSessions * 0.08), users: Math.floor(baseUsers * 0.07), bounceRate: 48.5, keyEvents: Math.floor(baseKeyEvents * 0.08) },
+      { country: 'Francia', countryCode: 'FR', sessions: Math.floor(baseSessions * 0.06), users: Math.floor(baseUsers * 0.06), bounceRate: 50.2, keyEvents: Math.floor(baseKeyEvents * 0.05) },
+      { country: 'Spagna', countryCode: 'ES', sessions: Math.floor(baseSessions * 0.05), users: Math.floor(baseUsers * 0.04), bounceRate: 49.8, keyEvents: Math.floor(baseKeyEvents * 0.04) },
+      { country: 'Regno Unito', countryCode: 'GB', sessions: Math.floor(baseSessions * 0.04), users: Math.floor(baseUsers * 0.04), bounceRate: 46.3, keyEvents: Math.floor(baseKeyEvents * 0.03) },
+    ];
+
+    return {
+      metrics,
+      usersChart,
+      pageViewsChart,
+      conversionsChart,
+      trafficSources,
+      landingPages,
+      devices,
+      geographic: countryFilter && countryFilter !== 'all'
+        ? geographic.filter(g => g.countryCode === countryFilter.toUpperCase())
+        : geographic,
+    };
   }
 }
 

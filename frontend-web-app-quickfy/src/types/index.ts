@@ -508,6 +508,102 @@ export interface OdooRPCRequest {
   id: number;
 }
 
+// ============================================
+// ANALYTICS & DASHBOARD TYPES
+// ============================================
+
+export type DateRangePreset =
+  | 'today'
+  | 'yesterday'
+  | 'last_7_days'
+  | 'last_30_days'
+  | 'this_month'
+  | 'last_month'
+  | 'this_quarter'
+  | 'custom';
+
+export interface DateRange {
+  startDate: string; // ISO format
+  endDate: string;
+  preset?: DateRangePreset;
+}
+
+export interface ComparisonPeriod extends DateRange {
+  enabled: boolean;
+}
+
+export interface AnalyticsMetrics {
+  sessions: number;
+  sessionsChange: number;
+  activeUsers: number;
+  activeUsersChange: number;
+  keyEvents: number;
+  keyEventsChange: number;
+  pageViews: number;
+  pageViewsChange: number;
+  bounceRate: number;
+  bounceRateChange: number;
+  avgSessionDuration: number;
+  avgSessionDurationChange: number;
+}
+
+export interface ChartDataPoint {
+  date: string;
+  value: number;
+  comparisonValue?: number;
+}
+
+export interface TrafficSourceData {
+  source: string;
+  medium: string;
+  sessions: number;
+  keyEvents: number;
+  conversionRate: number;
+  users: number;
+}
+
+export interface LandingPageData {
+  page: string;
+  pageTitle?: string;
+  views: number;
+  keyEvents: number;
+  bounceRate: number;
+  avgTimeOnPage: number;
+}
+
+export interface DeviceBreakdown {
+  device: 'desktop' | 'mobile' | 'tablet';
+  sessions: number;
+  percentage: number;
+  users: number;
+}
+
+export interface GeoData {
+  country: string;
+  countryCode: string; // ISO 2-letter code
+  sessions: number;
+  users: number;
+  bounceRate: number;
+  keyEvents: number;
+}
+
+export interface AnalyticsOverview {
+  metrics: AnalyticsMetrics;
+  usersChart: ChartDataPoint[];
+  pageViewsChart: ChartDataPoint[];
+  conversionsChart: ChartDataPoint[];
+  trafficSources: TrafficSourceData[];
+  landingPages: LandingPageData[];
+  devices: DeviceBreakdown[];
+  geographic: GeoData[];
+}
+
+export interface CountryOption {
+  code: string;
+  name: string;
+  flag: string;
+}
+
 export interface OdooRPCResponse<T> {
   jsonrpc: '2.0';
   id: number;
