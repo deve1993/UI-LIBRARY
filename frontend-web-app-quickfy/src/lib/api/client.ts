@@ -1,5 +1,5 @@
 import { OdooClient } from '@/lib/odoo/client';
-import { mockApi } from '@/lib/odoo/mock-data';
+import { mockApi, mockCampaigns } from '@/lib/odoo/mock-data';
 import type {
   LoginCredentials,
   AuthResponse,
@@ -14,11 +14,16 @@ import type {
   Review,
   SocialMetrics,
   Campaign,
+  CampaignAnalytics,
+  CampaignDailyData,
+  CampaignStatus,
+  AdPlatform,
   AnalyticsOverview,
   DateRange,
   ChartDataPoint,
   TrafficSourceData,
   LandingPageData,
+  ComparisonPeriod,
 } from '@/types';
 
 const USE_MOCK = process.env.USE_MOCK_API === 'true';
@@ -311,9 +316,137 @@ class ApiClient {
     throw new Error('Real campaigns not implemented yet');
   }
 
+  async getCampaignsAnalytics(
+    dateRange: DateRange,
+    comparisonRange?: DateRange,
+    platformFilter?: AdPlatform,
+    statusFilter?: CampaignStatus
+  ): Promise<CampaignAnalytics> {
+    if (USE_MOCK) {
+      return this.generateMockCampaignsAnalytics(dateRange, comparisonRange, platformFilter, statusFilter);
+    }
+
+    throw new Error('Real campaigns analytics not implemented yet');
+  }
+
   // ============================================
   // HELPER METHODS
   // ============================================
+
+  private generateMockCampaignsAnalytics(
+    dateRange: DateRange,
+    comparisonRange?: DateRange,
+    platformFilter?: AdPlatform,
+    statusFilter?: CampaignStatus
+  ): CampaignAnalytics {
+    const campaigns = mockCampaigns.filter(c => {
+      if (platformFilter && c.platform !== platformFilter) return false;
+      if (statusFilter && c.status !== statusFilter) return false;
+      return true;
+    });
+
+    const totalSpent = campaigns.reduce((sum, c) => sum + c.spent, 0);
+    const totalImpressions = campaigns.reduce((sum, c) => sum + c.impressions, 0);
+    const totalClicks = campaigns.reduce((sum, c) => sum + c.clicks, 0);
+    const totalConversions = campaigns.reduce((sum, c) => sum + c.conversions, 0);
+    const avgCTR = campaigns.length > 0
+      ? campaigns.reduce((sum, c) => sum + c.ctr, 0) / campaigns.length
+      : 0;
+    const avgCPC = campaigns.length > 0
+      ? campaigns.reduce((sum, c) => sum + c.cpc, 0) / campaigns.length
+      : 0;
+    const avgROAS = campaigns.length > 0
+      ? campaigns.reduce((sum, c) => sum + c.roas, 0) / campaigns.length
+      : 0;
+
+    // Generate daily chart data
+    const start = new Date(dateRange.startDate);
+    const end = new Date(dateRange.endDate);
+    const days = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+
+    const spentChart: ChartDataPoint[] = [];
+    const clicksChart: ChartDataPoint[] = [];
+    const roasChart: ChartDataPoint[] = [];
+    const dailyBreakdown: CampaignDailyData[] = [];
+
+    for (let i = 0; i <= days; i++) {
+      const date = new Date(start);
+      date.setDate(date.getDate() + i);
+      const dateStr = date.toISOString().split('T')[0];
+
+      // Weekend factor (30% less on weekends)
+      const isWeekend = date.getDay() === 0 || date.getDay() === 6;
+      const weekendFactor = isWeekend ? 0.7 : 1;
+
+      // Daily variation (0.8 - 1.2x)
+      const dailyVariation = 0.8 + Math.random() * 0.4;
+
+      const baseSpent = totalSpent / (days + 1);
+      const baseClicks = totalClicks / (days + 1);
+      const baseROAS = avgROAS;
+
+      const dailySpent = baseSpent * weekendFactor * dailyVariation;
+      const dailyClicks = baseClicks * weekendFactor * dailyVariation;
+      const dailyROAS = baseROAS * (0.9 + Math.random() * 0.2);
+      const dailyImpressions = dailyClicks / (avgCTR / 100);
+      const dailyConversions = dailyClicks * (totalConversions / totalClicks);
+      const dailyCTR = avgCTR * (0.9 + Math.random() * 0.2);
+      const dailyCPC = avgCPC * (0.9 + Math.random() * 0.2);
+
+      spentChart.push({
+        date: dateStr,
+        value: dailySpent,
+        comparisonValue: comparisonRange ? dailySpent * (0.85 + Math.random() * 0.3) : undefined,
+      });
+
+      clicksChart.push({
+        date: dateStr,
+        value: dailyClicks,
+        comparisonValue: comparisonRange ? dailyClicks * (0.85 + Math.random() * 0.3) : undefined,
+      });
+
+      roasChart.push({
+        date: dateStr,
+        value: dailyROAS,
+        comparisonValue: comparisonRange ? dailyROAS * (0.85 + Math.random() * 0.3) : undefined,
+      });
+
+      dailyBreakdown.push({
+        date: dateStr,
+        spent: dailySpent,
+        impressions: dailyImpressions,
+        clicks: dailyClicks,
+        conversions: dailyConversions,
+        ctr: dailyCTR,
+        cpc: dailyCPC,
+        roas: dailyROAS,
+      });
+    }
+
+    // Generate comparison changes
+    const generateChange = () => -5 + Math.random() * 35; // -5% to +30%
+
+    return {
+      totalSpent,
+      totalImpressions,
+      totalClicks,
+      totalConversions,
+      avgCTR,
+      avgCPC,
+      avgROAS,
+      totalSpentChange: generateChange(),
+      totalImpressionsChange: generateChange(),
+      totalClicksChange: generateChange(),
+      totalConversionsChange: generateChange(),
+      avgCTRChange: generateChange(),
+      avgCPCChange: generateChange(),
+      avgROASChange: generateChange(),
+      spentChart,
+      clicksChart,
+      roasChart,
+      dailyBreakdown,
+    };
+  }
 
   private mapOdooStageToStatus(
     stage: string

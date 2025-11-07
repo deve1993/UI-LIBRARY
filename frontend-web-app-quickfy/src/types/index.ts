@@ -438,6 +438,31 @@ export interface CampaignMetrics {
   avgROAS: number;
 }
 
+export interface CampaignAnalytics extends CampaignMetrics {
+  totalSpentChange: number;
+  totalImpressionsChange: number;
+  totalClicksChange: number;
+  totalConversionsChange: number;
+  avgCTRChange: number;
+  avgCPCChange: number;
+  avgROASChange: number;
+  spentChart: ChartDataPoint[];
+  clicksChart: ChartDataPoint[];
+  roasChart: ChartDataPoint[];
+  dailyBreakdown: CampaignDailyData[];
+}
+
+export interface CampaignDailyData {
+  date: string;
+  spent: number;
+  impressions: number;
+  clicks: number;
+  conversions: number;
+  ctr: number;
+  cpc: number;
+  roas: number;
+}
+
 // ============================================
 // FEATURE GATE TYPES
 // ============================================
