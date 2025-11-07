@@ -50,3 +50,6 @@ pnpm-debug.log*
 # OS
 Thumbs.db
 Desktop.ini
+
+# Test snapshots
+**/__snapshots__/
